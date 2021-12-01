@@ -32,21 +32,32 @@ export default class TouchableOpacitys extends Component {
 
     validate() {
         const text = this.state.resultText;
+        console.log(text);
+        if(text.includes("+/") || text.includes("*/")
+        || text.includes("/*") || text.includes("-/") 
+        || text.includes("***")){
+            return false;
+        }
         switch(text.slice(-1)) {
             case "+": 
             case "-": 
             case "*": 
-            case "/": 
+            case "/":
                 return false;
         }
         return true;
     }
 
     buttonResult() {
-        console.log(this.state.resultText);
+        const textMu = this.state.resultText;
         let text = eval(this.state.resultText);
+        if(!textMu.includes("**")){
+            this.setState({
+                myValue: textMu + " = " + text,
+            });
+        }
         this.setState({
-            myValue: this.state.resultText + " = " + text,
+            myValue: textMu.replace("**", "^") + " = " + text,
         });
         this.buttonClear();
     }
@@ -54,7 +65,11 @@ export default class TouchableOpacitys extends Component {
     buttonPress(text) {
         console.log(text)
         if(text == '='){
-            return this.validate() && this.buttonResult();
+            if(this.state.resultText != ""){
+                return this.validate() && this.buttonResult();
+            }
+            else
+                return null;
         }
         if(text == 'C'){
             return this.buttonClear();
@@ -73,10 +88,11 @@ export default class TouchableOpacitys extends Component {
     render(){
         return(
             <View>
-                <Text style={[styles.input, {marginBottom: 0, height: 70, lineHeight: 70, fontSize: 30}]}>
+                <Text style={[styles.input, {marginBottom: 0, height: 70, lineHeight: 70, fontSize: 30}]}
+                numberOfLines={1} ellipsizeMode="head">
                     {this.state.myValue}
                 </Text>
-                <Text style={styles.input}>
+                <Text style={[styles.input, {marginBottom: 0}]} numberOfLines={1} ellipsizeMode="head">
                     {this.state.resultText}
                 </Text>
             
@@ -162,10 +178,10 @@ export default class TouchableOpacitys extends Component {
                             onPress={() => this.buttonPress("+")}>
                                 <Text style={styles.num}>+</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[styles.box, {width: '90%', height: 200, backgroundColor: '#cf7961' }]}
+                            <TouchableOpacity style={[styles.box, {width: '90%', height: 170, backgroundColor: '#cf7961' }]}
                             onPress={() => this.buttonPress("=")}>
                                 <Text style={[styles.num, 
-                                    {lineHeight: 200, height: 200, fontSize: 45}]}>
+                                    {lineHeight: 170, height: 170, fontSize: 45}]}>
                                     =
                                 </Text>
                             </TouchableOpacity>
