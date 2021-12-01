@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         lineHeight: 80,
         color: 'white',
+        fontWeight: 'bold',
     },
     input: {
         height: 100,

@@ -1,6 +1,7 @@
 import React, {Component, useState} from "react";
-import {View, Text, TouchableOpacity} from 'react-native'
+import {View, Text, TouchableOpacity, Alert} from 'react-native'
 import styles from "../styles/boxNumber";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 export default class TouchableOpacitys extends Component {
@@ -33,17 +34,22 @@ export default class TouchableOpacitys extends Component {
     validate() {
         const text = this.state.resultText;
         console.log(text);
-        if(text.includes("+/") || text.includes("*/")
-        || text.includes("/*") || text.includes("-/") 
-        || text.includes("***")){
-            return false;
-        }
         switch(text.slice(-1)) {
             case "+": 
             case "-": 
             case "*": 
             case "/":
                 return false;
+        }
+        if(text.includes("+/") || text.includes("*/")
+        || text.includes("/*") || text.includes("-/") 
+        || text.startsWith("*")|| text.startsWith("/")
+        || text.includes("***")){
+        Alert.alert("Cảnh báo", "Sai cú pháp rồi bạn ơi", 
+            [
+                {text: 'OK', onPress: () => {this.buttonClear()}}
+        ]);
+            return false;
         }
         return true;
     }
@@ -101,15 +107,15 @@ export default class TouchableOpacitys extends Component {
                             <View style={{flexDirection: 'row', width: '100%'}}>
                                 <TouchableOpacity style={[styles.box, {backgroundColor: '#c24444'}]}
                                 onPress={() => this.buttonPress("C")}>
-                                    <Text style={styles.num}>C</Text>
+                                    <Text style={[styles.num, {fontWeight: 'normal'}]}>C</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.box, {backgroundColor: '#DCA394'}]}
                                 onPress={() => this.buttonPress("*")}>
-                                    <Text style={styles.num}>*</Text>
+                                    <Text style={[styles.num, {fontWeight: 'normal'}]}>*</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.box, {backgroundColor: '#DCA394'}]}
                                 onPress={() => this.buttonPress("/")}>
-                                    <Text style={styles.num}>/</Text>
+                                    <Text style={[styles.num, {fontWeight: 'normal'}]}>/</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{flexDirection: 'row'}}>
@@ -155,28 +161,28 @@ export default class TouchableOpacitys extends Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={{flexDirection: 'row'}}>
-                                <TouchableOpacity style={[styles.box, {width: '62%', marginRight: 6, marginLeft: 6, backgroundColor: '#25587a'}]}
+                                <TouchableOpacity style={[styles.box, {width: '62%', marginRight: 6, marginLeft: 6, backgroundColor: '#046ab0'}]}
                                 onPress={() => this.buttonPress("0")}>
                                     <Text style={styles.num}>0</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.box}
                                 onPress={() => this.buttonPress(".")}>
-                                    <Text style={[styles.num, {fontSize: 70, lineHeight: 90}]}>.</Text>
+                                    <Text style={[styles.num, {fontSize: 50, lineHeight: 70}]}>.</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                         <View style={{flexDirection:'column', width: '25%'}}>
                             <TouchableOpacity style={[styles.box, {width: '90%', backgroundColor: '#c24444'}]}
                             onPress={() => this.buttonPress("X")}>
-                                <Text style={styles.num}>Xóa</Text>
+                                <MaterialCommunityIcons name="backspace" style={styles.num}/>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.box, {width: '90%', backgroundColor: '#DCA394'}]}
                             onPress={() => this.buttonPress("-")}>
-                                <Text style={styles.num}>-</Text>
+                                <Text style={[styles.num, {fontSize: 45, fontWeight: 'normal'}]}>-</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.box, {width: '90%', backgroundColor: '#DCA394'}]}
                             onPress={() => this.buttonPress("+")}>
-                                <Text style={styles.num}>+</Text>
+                                <Text style={[styles.num, {fontWeight: 'normal'}]}>+</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={[styles.box, {width: '90%', height: 170, backgroundColor: '#cf7961' }]}
                             onPress={() => this.buttonPress("=")}>
